@@ -2,6 +2,7 @@ import React from 'react';
 import { Col, Container, Row } from 'react-bootstrap';
 import { Outlet } from 'react-router';
 import Navigation from '../../3widgets/Navigation/Navigation';
+import ChatAI from '../../3widgets/ChatAI/ChatAI';
 
 export default function Layout() {
   return (
@@ -16,6 +17,7 @@ export default function Layout() {
           <Outlet />
         </Col>
       </Row>
+      <ChatAI />
     </Container>
   );
 }

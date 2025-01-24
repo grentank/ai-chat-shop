@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Иван Иванов",
+    "email": "ivan.ivanov@example.com",
+    "phone": "+79161234567",
+    "address": "ул. Ленина, д. 10, кв. 5, Москва"
+  },
+  {
+    "name": "Мария Петрова",
+    "email": "maria.petrova@example.com",
+    "phone": "+79261234568",
+    "address": "пр. Победы, д. 15, кв. 12, Санкт-Петербург"
+  },
+  {
+    "name": "Алексей Смирнов",
+    "email": "alexey.smirnov@example.com",
+    "phone": "+79361234569",
+    "address": "ул. Гагарина, д. 20, кв. 7, Екатеринбург"
+  },
+  {
+    "name": "Ольга Кузнецова",
+    "email": "olga.kuznetsova@example.com",
+    "phone": "+79461234570",
+    "address": "ул. Советская, д. 25, кв. 3, Новосибирск"
+  },
+  {
+    "name": "Дмитрий Васильев",
+    "email": "dmitry.vasiliev@example.com",
+    "phone": "+79561234571",
+    "address": "ул. Мира, д. 30, кв. 9, Казань"
+  },
+  {
+    "name": "Елена Новикова",
+    "email": "elena.novikova@example.com",
+    "phone": "+79661234572",
+    "address": "ул. Кирова, д. 35, кв. 14, Нижний Новгород"
+  },
+  {
+    "name": "Сергей Морозов",
+    "email": "sergey.morozov@example.com",
+    "phone": "+79761234573",
+    "address": "ул. Пушкина, д. 40, кв. 8, Самара"
+  },
+  {
+    "name": "Анна Волкова",
+    "email": "anna.volkova@example.com",
+    "phone": "+79861234574",
+    "address": "ул. Чехова, д. 45, кв. 11, Омск"
+  },
+  {
+    "name": "Павел Белов",
+    "email": "pavel.belov@example.com",
+    "phone": "+79961234575",
+    "address": "ул. Горького, д. 50, кв. 6, Ростов-на-Дону"
+  },
+  {
+    "name": "Татьяна Козлова",
+    "email": "tatiana.kozlov@example.com",
+    "phone": "+79001234576",
+    "address": "ул. Лермонтова, д. 55, кв. 10, Уфа"
+  }
+]

@@ -1,0 +1,112 @@
+[
+  {
+    "name": "Смартфон Xiaomi Redmi Note 11",
+    "description": "6.43-дюймовый AMOLED-дисплей, 128 ГБ памяти, 4 ГБ ОЗУ, камера 50 Мп.",
+    "price": 19999,
+    "image": "/img/redmi11.png"
+  },
+  {
+    "name": "Ноутбук ASUS VivoBook 15",
+    "description": "15.6-дюймовый экран, процессор Intel Core i5, 8 ГБ ОЗУ, 512 ГБ SSD.",
+    "price": 54999,
+    "image": "/img/asus15.png"
+  },
+  {
+    "name": "Наушники Sony WH-1000XM4",
+    "description": "Беспроводные наушники с шумоподавлением, до 30 часов работы от одного заряда.",
+    "price": 24999,
+    "image": "/img/headphones.png"
+  },
+  {
+    "name": "Фитнес-браслет Xiaomi Mi Band 6",
+    "description": "1.56-дюймовый AMOLED-экран, мониторинг сна, пульса и активности.",
+    "price": 3499,
+    "image": "/img/miband.png"
+  },
+  {
+    "name": "Кофемашина De'Longhi Magnifica",
+    "description": "Автоматическая кофемашина с функцией приготовления капучино.",
+    "price": 44999
+  },
+  {
+    "name": "Электросамокат Xiaomi Mi Electric Scooter 3",
+    "description": "Максимальная скорость 25 км/ч, запас хода до 30 км, вес 12.5 кг.",
+    "price": 29999
+  },
+  {
+    "name": "Умная колонка Яндекс Станция Мини",
+    "description": "Управление голосом, встроенный Алиса, поддержка умного дома.",
+    "price": 7999
+  },
+  {
+    "name": "Планшет Samsung Galaxy Tab S7",
+    "description": "11-дюймовый экран, 128 ГБ памяти, 6 ГБ ОЗУ, стилус в комплекте.",
+    "price": 49999
+  },
+  {
+    "name": "Электрочайник Bosch TWK 8611",
+    "description": "Мощность 2400 Вт, объем 1.7 л, функция поддержания температуры.",
+    "price": 2999,
+    "image": "/img/ketler.png"
+  },
+  {
+    "name": "Робот-пылесос Xiaomi Mi Robot Vacuum-Mop 2",
+    "description": "Влажная уборка, навигация по карте, управление через приложение.",
+    "price": 19999,
+    "image": "/img/vacuum.png"
+  },
+  {
+    "name": "Монитор LG 27GN800-B",
+    "description": "27-дюймовый игровой монитор с разрешением QHD и частотой 144 Гц.",
+    "price": 34999,
+    "image": "/img/lg-monitor.png"
+  },
+  {
+    "name": "Фотоаппарат Canon EOS M50 Mark II",
+    "description": "Зеркальная камера с 24.1 Мп, 4K-видео, поворотный экран.",
+    "price": 59999,
+    "image": "/img/canon.png"
+  },
+  {
+    "name": "Purple Socks for Men and Women",
+    "price": 9.99,
+    "description": "Classic Created Elbrus Engagement Solitaire Diamond Socks for Men and Women. Gifts to spoil your love more for Engagement, Wedding, Anniversary, Valentine's Day...",
+    "image": "/img/socks.jpg"
+  },
+  {
+    "name": "White Gold Plated Princess",
+    "price": 9.99,
+    "description": "Classic Created Wedding Engagement Solitaire Diamond Promise Ring for Her. Gifts to spoil your love more for Engagement, Wedding, Anniversary, Valentine's Day...",
+    "image": "/img/ring.jpg"
+  },
+  {
+    "name": "Solid Gold Petite Micropave ",
+    "price": 168,
+    "description": "Satisfaction Guaranteed. Return or exchange any order within 30 days.Designed and sold by Hafeez Center in the United States. Satisfaction Guaranteed. Return or exchange any order within 30 days.",
+    "image": "/img/Micropave.jpg"
+  },
+  {
+    "name": "John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet",
+    "price": 695,
+    "description": "From our Legends Collection, the Naga was inspired by the mythical water dragon that protects the ocean's pearl. Wear facing inward to be bestowed with love and abundance, or outward for protection.",
+    "image": "/img/womenDr.jpg"
+  },
+  {
+    "name": "Mens Casual Slim Fit",
+    "price": 15.99,
+    "description": "The color could be slightly different between on the screen and in practice. / Please note that body builds vary by person, therefore, detailed size information should be reviewed below on the product description.",
+    "image": "/img/menTs.jpg"
+  },
+  {
+    "name": "DANVOUY Womens T Shirt Casual Cotton Short",
+    "price": 12.99,
+    "description": "95%Cotton,5%Spandex, Features: Casual, Short Sleeve, Letter Print,V-Neck,Fashion Tees, The fabric is soft and has some stretch., Occasion: Casual/Office/Beach/School/Home/Street. Season: Spring,Summer,Autumn,Winter.",
+    "image": "/img/jacket.jpg"
+  },
+  {
+    "name": "Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",
+    "price": 109.95,
+    "description": "Your perfect pack for everyday use and walks in the forest. Stash your laptop (up to 15 inches) in the padded sleeve, your everyday",
+    "image": "/img/Backpack.jpg"
+  }
+]
