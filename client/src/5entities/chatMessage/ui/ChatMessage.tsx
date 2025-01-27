@@ -1,11 +1,11 @@
 import React from 'react';
+import { ChatMessageT } from '../model/chatMessage.schema';
 
 type ChatMessageProps = {
-  text: string;
-  isUser: boolean;
+  message: ChatMessageT;
 };
 
-const ChatMessage = ({ text, isUser }: ChatMessageProps) => {
+const ChatMessage = ({ message: { text, isUser } }: ChatMessageProps) => {
   // Стили для сообщений AI
   const aiMessageStyle = {
     backgroundColor: '#eaf4ea', // Серо-голубой фон
@@ -35,7 +35,7 @@ const ChatMessage = ({ text, isUser }: ChatMessageProps) => {
       }}
     >
       <div style={isUser ? userMessageStyle : aiMessageStyle}>
-        <p style={{ margin: 0 }}>{text}</p>
+        <p style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: text }} />
       </div>
     </div>
   );

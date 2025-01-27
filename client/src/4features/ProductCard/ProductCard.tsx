@@ -27,8 +27,8 @@ export default function ProductCard({ product }: ProductCardProps): React.JSX.El
           <span style={styles.discount}>-66%</span>
         </Card.Title>
         <p>
-          {product.name.slice(0, 23)}
-          {product.name.length > 23 && '...'}
+          {product.name.slice(0, 42)}
+          {product.name.length > 42 && '...'}
         </p>
       </Card.Body>
     </Card>

@@ -1,17 +1,29 @@
-import React, { useState } from 'react';
-import { Button, Offcanvas } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, Form, Offcanvas } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import ChatMessage from './ChatMessage';
+import ChatMessage from '../../5entities/chatMessage/ui/ChatMessage';
+import { useAppDispatch, useAppSelector } from '../../6shared/lib/hooks';
+import { sendMessageThunk, toggleChat } from '../../5entities/chatMessage/model/chatSlice';
 
 const ChatAI = () => {
-  const [showChat, setShowChat] = useState(false); // Состояние для отображения чата
-  const [isMinimized, setIsMinimized] = useState(true); // Состояние для свернутого/развернутого вида
-
-  // Обработчик для сворачивания/разворачивания виджета
-  const toggleChat = () => {
-    setShowChat(!showChat);
-    setIsMinimized(!isMinimized);
+  const dispatch = useAppDispatch();
+  const toggle = () => {
+    dispatch(toggleChat());
   };
+
+  const { showChat, messages } = useAppSelector((store) => store.chat);
+  const [input, setInput] = useState('');
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  useEffect(() => {
+    if (messagesEndRef.current) {
+      requestAnimationFrame(() => {
+        if (messagesEndRef.current) {
+          messagesEndRef.current.scrollTop = messagesEndRef.current.scrollHeight;
+        }
+      });
+    }
+  }, [messages]);
 
   return (
     <div
@@ -23,14 +35,14 @@ const ChatAI = () => {
       }}
     >
       {/* Кнопка для открытия/закрытия чата */}
-      {isMinimized && (
-        <Button variant="dark" onClick={toggleChat}>
+      {!showChat && (
+        <Button variant="dark" onClick={toggle}>
           Чат с AI
         </Button>
       )}
 
       {/* Окно чата */}
-      <Offcanvas show={showChat} onHide={toggleChat} placement="end" style={{ width: '50%' }}>
+      <Offcanvas show={showChat} onHide={toggle} placement="end" style={{ width: '50%' }}>
         <Offcanvas.Header closeButton>
           <Offcanvas.Title>Чат с AI-ассистентом</Offcanvas.Title>
         </Offcanvas.Header>
@@ -44,6 +56,7 @@ const ChatAI = () => {
           >
             {/* Область сообщений */}
             <div
+              ref={messagesEndRef}
               style={{
                 flex: 1,
                 overflowY: 'auto',
@@ -53,28 +66,50 @@ const ChatAI = () => {
                 padding: '10px',
               }}
             >
-              <ChatMessage text="Привет! Чем могу помочь?" isUser={false} />
-              <ChatMessage text="Привет! Как настроить уведомления?" isUser={true} />
-              <ChatMessage
-                text="Конечно! Перейдите в настройки и выберите раздел 'Уведомления'."
-                isUser={false}
-              />
+              {messages.map((message) => (
+                <ChatMessage key={message.id} message={message} />
+              ))}
             </div>
 
-            {/* Поле ввода и кнопка отправки */}
-            <div style={{ display: 'flex' }}>
-              <input
-                type="text"
+            <form
+              style={{ display: 'flex' }}
+              onSubmit={(e) => {
+                e.preventDefault();
+                dispatch(sendMessageThunk(input)).then(() => {
+                  setInput('');
+                });
+              }}
+            >
+              <Form.Control
+                onInput={() => {
+                  textareaRef.current!.style.height = 'auto';
+                  textareaRef.current!.style.height = `${textareaRef.current!.scrollHeight}px`;
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    dispatch(sendMessageThunk(input)).then(() => {
+                      setInput('');
+                    });
+                  }
+                }}
+                as="textarea"
+                ref={textareaRef}
                 placeholder="Введите сообщение..."
+                value={input}
+                onChange={(e) => setInput(e.target.value)}
                 style={{
                   flex: 1,
                   marginRight: '10px',
                   padding: '5px',
                   borderRadius: '5px',
                   border: '1px solid #ddd',
+                  minHeight: '50%',
+                  resize: 'none',
+                  overflow: 'hidden',
                 }}
               />
-              <Button variant="outline-dark">
+              <Button type="submit" variant="outline-dark">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="16"
@@ -86,7 +121,7 @@ const ChatAI = () => {
                   <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
                 </svg>
               </Button>
-            </div>
+            </form>
           </div>
         </Offcanvas.Body>
       </Offcanvas>

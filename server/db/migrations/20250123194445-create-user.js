@@ -19,10 +19,6 @@ module.exports = {
         allowNull: false,
         unique: true,
       },
-      hashpass: {
-        type: Sequelize.STRING,
-        allowNull: false,
-      },
       phone: {
         type: Sequelize.STRING,
         allowNull: true,

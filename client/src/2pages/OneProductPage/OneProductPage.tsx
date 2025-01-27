@@ -1,10 +1,36 @@
-import React from 'react';
-import { Button, Col, Container, Row } from 'react-bootstrap';
+import React, { useEffect, useRef, useState } from 'react';
+import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import * as styles from './styles';
-import MOCK_PRODUCTS from '../../5entities/products/model/products';
+import { useAppDispatch, useAppSelector } from '../../6shared/lib/hooks';
+import { useParams } from 'react-router';
+import {
+  clearComments,
+  createComment,
+  getCommentsByProductId,
+} from '../../5entities/comment/model/commentsSlice';
 
 export default function OneProductPage(): React.JSX.Element {
-  const product = MOCK_PRODUCTS[0];
+  const dispatch = useAppDispatch();
+  const { productId } = useParams();
+
+  useEffect(() => {
+    if (!productId) return;
+    dispatch(getCommentsByProductId(Number(productId)));
+    return () => {
+      dispatch(clearComments());
+    };
+  }, [productId]);
+  const product = useAppSelector((store) =>
+    store.products.list.find((p) => p.id === Number(productId)),
+  );
+  const comments = useAppSelector((store) => store.comments.list);
+  const [commentText, setCommentText] = useState('');
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
+  const dispatchAddComment = () => {
+    dispatch(createComment({ productId: Number(productId), text: commentText }));
+    setCommentText('');
+  };
+
   if (!product) return <p>загрузка...</p>;
 
   return (
@@ -36,9 +62,54 @@ export default function OneProductPage(): React.JSX.Element {
 
       <Row style={{ marginTop: '30px' }}>
         <Col>
-          <p style={{ fontStyle: 'italic', color: 'gray' }}>
-            Никто пока не оставил комментарий к данному товару.
-          </p>
+          <Form
+            onSubmit={(e) => {
+              e.preventDefault();
+              dispatchAddComment();
+            }}
+          >
+            <Form.Group controlId="commentText">
+              <Form.Label>Добавить комментарий</Form.Label>
+              <Form.Control
+                onInput={() => {
+                  textareaRef.current!.style.height = 'auto';
+                  textareaRef.current!.style.height = `${textareaRef.current!.scrollHeight}px`;
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    dispatchAddComment();
+                  }
+                }}
+                ref={textareaRef}
+                as="textarea"
+                rows={3}
+                value={commentText}
+                onChange={(e) => setCommentText(e.target.value)}
+                placeholder="Введите ваш комментарий..."
+              />
+            </Form.Group>
+            <Button variant="primary" type="submit" className="mt-2">
+              Отправить
+            </Button>
+          </Form>
+        </Col>
+      </Row>
+
+      <Row style={{ marginTop: '30px' }}>
+        <Col>
+          {comments.length === 0 ? (
+            <p style={{ fontStyle: 'italic', color: 'gray' }}>
+              Никто пока не оставил комментарий к данному товару.
+            </p>
+          ) : (
+            comments.map((comment) => (
+              <div key={comment.id} style={{ marginBottom: '20px' }}>
+                <h5>{comment.User.name}</h5>
+                <p>{comment.body}</p>
+              </div>
+            ))
+          )}
         </Col>
       </Row>
     </Container>

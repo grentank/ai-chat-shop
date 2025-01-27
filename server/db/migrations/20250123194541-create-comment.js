@@ -28,12 +28,9 @@ module.exports = {
         allowNull: false,
         onDelete: 'CASCADE',
       },
-      raiting: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-      },
       body: {
         type: Sequelize.TEXT,
+        allowNull: false,
       },
       createdAt: {
         allowNull: false,

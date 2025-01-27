@@ -22,13 +22,20 @@ export const textContainer = {
   color: '#fff',
 } as const;
 
-export const title = { fontSize: '3rem', fontWeight: 'bold', color: 'black' } as const;
+export const title = {
+  fontSize: '3rem',
+  fontWeight: 'bold',
+  color: 'black',
+  backgroundColor: '#ffffff',
+  padding: '10px 15px',
+  borderRadius: '5px',
+} as const;
 
 export const titleDiscount = {
   fontSize: '2rem',
   fontWeight: 'bold',
   color: '#fff',
-  backgroundColor: '#ff0000',
+  backgroundColor: '#FE2E3E',
   padding: '10px 15px',
   borderRadius: '5px',
   display: 'inline-block',
