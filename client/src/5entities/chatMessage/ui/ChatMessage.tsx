@@ -5,7 +5,7 @@ type ChatMessageProps = {
   message: ChatMessageT;
 };
 
-const ChatMessage = ({ message: { text, isUser } }: ChatMessageProps) => {
+const ChatMessage = ({ message: { content, role } }: ChatMessageProps) => {
   // Стили для сообщений AI
   const aiMessageStyle = {
     backgroundColor: '#eaf4ea', // Серо-голубой фон
@@ -31,11 +31,11 @@ const ChatMessage = ({ message: { text, isUser } }: ChatMessageProps) => {
       style={{
         display: 'flex',
         flexDirection: 'column',
-        alignItems: isUser ? 'flex-end' : 'flex-start',
+        alignItems: role === 'user' ? 'flex-end' : 'flex-start',
       }}
     >
-      <div style={isUser ? userMessageStyle : aiMessageStyle}>
-        <p style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: text }} />
+      <div style={role === 'user' ? userMessageStyle : aiMessageStyle}>
+        <p style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: content }} />
       </div>
     </div>
   );

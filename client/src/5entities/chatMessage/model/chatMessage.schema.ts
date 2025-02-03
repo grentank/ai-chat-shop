@@ -1,9 +1,9 @@
 import { z } from 'zod';
 
 export const chatMessageSchema = z.object({
-  id: z.number(),
-  text: z.string(),
-  isUser: z.boolean(),
+  messageId: z.string(),
+  content: z.string(),
+  role: z.enum(['system', 'assistant', 'user']),
 });
 
 export type ChatMessageT = z.infer<typeof chatMessageSchema>;

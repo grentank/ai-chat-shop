@@ -1,9 +1,15 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Button, Form, Offcanvas } from 'react-bootstrap';
+import { Button, Form, Offcanvas, Spinner } from 'react-bootstrap';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import ChatMessage from '../../5entities/chatMessage/ui/ChatMessage';
 import { useAppDispatch, useAppSelector } from '../../6shared/lib/hooks';
-import { sendMessageThunk, toggleChat } from '../../5entities/chatMessage/model/chatSlice';
+import {
+  addUserMessageThunk,
+  createChatThunk,
+  toggleChat,
+} from '../../5entities/chatMessage/model/chatSlice';
+import LoadingSpinner from '../../6shared/ui/LoadingSpinner';
+import { setTextByKey } from '../../4features/preparedPrompts';
 
 const ChatAI = () => {
   const dispatch = useAppDispatch();
@@ -11,7 +17,7 @@ const ChatAI = () => {
     dispatch(toggleChat());
   };
 
-  const { showChat, messages } = useAppSelector((store) => store.chat);
+  const { showChat, messages, sending } = useAppSelector((store) => store.chat);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -24,6 +30,12 @@ const ChatAI = () => {
       });
     }
   }, [messages]);
+
+  useEffect(() => {
+    if (!textareaRef.current) return;
+    textareaRef.current!.style.height = 'auto';
+    textareaRef.current!.style.height = `${textareaRef.current!.scrollHeight}px`;
+  }, [input]);
 
   return (
     <div
@@ -67,7 +79,7 @@ const ChatAI = () => {
               }}
             >
               {messages.map((message) => (
-                <ChatMessage key={message.id} message={message} />
+                <ChatMessage key={message.messageId} message={message} />
               ))}
             </div>
 
@@ -75,25 +87,35 @@ const ChatAI = () => {
               style={{ display: 'flex' }}
               onSubmit={(e) => {
                 e.preventDefault();
-                dispatch(sendMessageThunk(input)).then(() => {
-                  setInput('');
-                });
+                if (messages.length <= 1) {
+                  dispatch(createChatThunk(input));
+                } else {
+                  dispatch(addUserMessageThunk({ messages, text: input }));
+                }
+                setInput('');
               }}
             >
               <Form.Control
-                onInput={() => {
-                  textareaRef.current!.style.height = 'auto';
-                  textareaRef.current!.style.height = `${textareaRef.current!.scrollHeight}px`;
-                }}
+                // onInput={() => {
+                //   textareaRef.current!.style.height = 'auto';
+                //   textareaRef.current!.style.height = `${textareaRef.current!.scrollHeight}px`;
+                // }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
-                    dispatch(sendMessageThunk(input)).then(() => {
-                      setInput('');
-                    });
+                    if (messages.length <= 1) {
+                      dispatch(createChatThunk(input));
+                    } else {
+                      dispatch(addUserMessageThunk({ messages, text: input }));
+                    }
+                    setInput('');
+                  }
+                  if (e.altKey && Number(e.key) >= 0 && Number(e.key) <= 9) {
+                    setTextByKey(e.key, setInput);
                   }
                 }}
                 as="textarea"
+                disabled={sending}
                 ref={textareaRef}
                 placeholder="Введите сообщение..."
                 value={input}
@@ -109,17 +131,26 @@ const ChatAI = () => {
                   overflow: 'hidden',
                 }}
               />
-              <Button type="submit" variant="outline-dark">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="16"
-                  height="16"
-                  fill="currentColor"
-                  className="bi bi-send"
-                  viewBox="0 0 16 16"
-                >
-                  <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
-                </svg>
+              <Button disabled={sending} type="submit" variant="outline-dark">
+                {sending ? (
+                  <Spinner
+                    style={{
+                      height: '16px',
+                      width: '16px',
+                    }}
+                  />
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    fill="currentColor"
+                    className="bi bi-send"
+                    viewBox="0 0 16 16"
+                  >
+                    <path d="M15.854.146a.5.5 0 0 1 .11.54l-5.819 14.547a.75.75 0 0 1-1.329.124l-3.178-4.995L.643 7.184a.75.75 0 0 1 .124-1.33L15.314.037a.5.5 0 0 1 .54.11ZM6.636 10.07l2.761 4.338L14.13 2.576zm6.787-8.201L1.591 6.602l4.339 2.76z" />
+                  </svg>
+                )}
               </Button>
             </form>
           </div>

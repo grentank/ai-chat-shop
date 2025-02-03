@@ -1,0 +1,1 @@
+SELECT c.body AS comment_body, c.createdAt AS comment_created_at, u.name AS user_name, p.id AS product_id, p.name AS product_name, p.price AS product_price FROM Comments c JOIN Users u ON c.userId = u.id JOIN Products p ON c.productId = p.id WHERE p.name ILIKE '%наушники%';
