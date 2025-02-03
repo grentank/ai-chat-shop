@@ -8,8 +8,9 @@ import {
   createChatThunk,
   toggleChat,
 } from '../../5entities/chatMessage/model/chatSlice';
-import LoadingSpinner from '../../6shared/ui/LoadingSpinner';
 import { setTextByKey } from '../../4features/preparedPrompts';
+import { getProductsThunk } from '../../5entities/products/model/productsSlice';
+import DatabaseDroppedIcon from '../../6shared/ui/DatabaseDroppedIcon';
 
 const ChatAI = () => {
   const dispatch = useAppDispatch();
@@ -17,7 +18,7 @@ const ChatAI = () => {
     dispatch(toggleChat());
   };
 
-  const { showChat, messages, sending } = useAppSelector((store) => store.chat);
+  const { showChat, messages, sending, dbDropped } = useAppSelector((store) => store.chat);
   const [input, setInput] = useState('');
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
@@ -37,6 +38,13 @@ const ChatAI = () => {
     textareaRef.current!.style.height = `${textareaRef.current!.scrollHeight}px`;
   }, [input]);
 
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      dispatch(getProductsThunk());
+    }, 1000);
+    return () => clearTimeout(timeoutId);
+  }, [messages]);
+
   return (
     <div
       style={{
@@ -46,17 +54,17 @@ const ChatAI = () => {
         zIndex: 1000,
       }}
     >
-      {/* Кнопка для открытия/закрытия чата */}
       {!showChat && (
         <Button variant="dark" onClick={toggle}>
           Чат с AI
         </Button>
       )}
 
-      {/* Окно чата */}
       <Offcanvas show={showChat} onHide={toggle} placement="end" style={{ width: '50%' }}>
         <Offcanvas.Header closeButton>
-          <Offcanvas.Title>Чат с AI-ассистентом</Offcanvas.Title>
+          <Offcanvas.Title>
+            Чат с AI-ассистентом {dbDropped && <DatabaseDroppedIcon />}
+          </Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
           <div
@@ -66,7 +74,6 @@ const ChatAI = () => {
               height: '100%',
             }}
           >
-            {/* Область сообщений */}
             <div
               ref={messagesEndRef}
               style={{
@@ -96,10 +103,6 @@ const ChatAI = () => {
               }}
             >
               <Form.Control
-                // onInput={() => {
-                //   textareaRef.current!.style.height = 'auto';
-                //   textareaRef.current!.style.height = `${textareaRef.current!.scrollHeight}px`;
-                // }}
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();

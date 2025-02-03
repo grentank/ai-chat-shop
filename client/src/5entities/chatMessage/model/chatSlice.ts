@@ -7,11 +7,13 @@ export type ChatSliceState = {
   messages: ChatMessageT[];
   showChat: boolean;
   sending: boolean;
+  dbDropped: boolean;
 };
 
 const initialState: ChatSliceState = {
   showChat: false,
   sending: false,
+  dbDropped: false,
   messages: [
     {
       messageId: v4(),
@@ -52,6 +54,9 @@ export const chatSlice = createSlice({
       };
       state.messages.push(newMessage);
     },
+    setDropped: (state) => {
+      state.dbDropped = true;
+    }
   },
   extraReducers: (builder) => {
     builder

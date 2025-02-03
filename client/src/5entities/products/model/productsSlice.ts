@@ -12,8 +12,11 @@ const initialState: ProductsSliceState = {
   chosenProduct: null,
 };
 
-export const getProductsThunk = createAsyncThunk('products/getProducts', async () =>
-  productService.getProducts(),
+export const getProductsThunk = createAsyncThunk('products/getProducts', async (_, thunkApi) =>
+  productService.getProducts().catch((error) => {
+    thunkApi.dispatch({ type: 'chat/setDropped' });
+    return Promise.reject(error);
+  }),
 );
 
 export const productsSlice = createSlice({
