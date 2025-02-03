@@ -56,34 +56,30 @@ export const chatSlice = createSlice({
     },
     setDropped: (state) => {
       state.dbDropped = true;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
       .addCase(createChatThunk.fulfilled, (state, action) => {
         state.messages.push(action.payload);
+        state.sending = false;
       })
       .addCase(addUserMessageThunk.fulfilled, (state, action) => {
         state.messages.push(action.payload);
+        state.sending = false;
       })
-      .addMatcher(
-        (action) => action.type.endsWith('/pending'),
-        (state) => {
-          state.sending = true;
-        },
-      )
-      .addMatcher(
-        (action) => action.type.endsWith('/rejected'),
-        (state) => {
-          state.sending = false;
-        },
-      )
-      .addMatcher(
-        (action) => action.type.endsWith('/fulfilled'),
-        (state) => {
-          state.sending = false;
-        },
-      );
+      .addCase(createChatThunk.pending, (state) => {
+        state.sending = true;
+      })
+      .addCase(addUserMessageThunk.pending, (state) => {
+        state.sending = true;
+      })
+      .addCase(createChatThunk.rejected, (state) => {
+        state.sending = false;
+      })
+      .addCase(addUserMessageThunk.rejected, (state) => {
+        state.sending = false;
+      });
   },
 });
 

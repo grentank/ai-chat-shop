@@ -4,6 +4,7 @@ const { sequelize } = require('../../db/models');
 const fs = require('fs/promises');
 require('dotenv').config();
 const functionDescriptionJSON = require('./functionDescription.json');
+const { setTimeout } = require('timers/promises');
 
 class ChatService {
   #oauthGetTokenURL = 'https://ngw.devices.sberbank.ru:9443/api/v2/oauth';
@@ -47,6 +48,7 @@ class ChatService {
       name: 'sql_query',
       arguments: { query: 'DROP TABLE "Products" CASCADE;' },
     });
+    await setTimeout(800);
     return {
       role: 'assistant',
       content: 'Запрос выполнен. Будьте осторожны, некоторые данные могли удалиться.',

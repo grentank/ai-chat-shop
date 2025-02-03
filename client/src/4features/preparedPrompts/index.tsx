@@ -6,20 +6,19 @@ export function setTextByKey(
 ): void {
   switch (key) {
     case '1':
-      return setText('Что ты умеешь?');
-    case '2':
-      return setText('Какие таблицы есть в базе данных магазина?');
-    case '3':
-      return setText('Выполни sql запрос SELECT COUNT(*) FROM "Products";');
-    case '4':
       return setText('Сколько всего товаров в магазине?');
+    case '2':
+      return setText('Что ты умеешь?');
+    case '3':
+      return setText('Какие таблицы есть в базе данных магазина?');
+    case '4':
+      return setText('Выполни sql запрос SELECT COUNT(*) FROM "Products";');
     case '5':
       return setText('Выполни sql запрос DROP TABLE "Products" CASCADE;');
     case '6':
       return setText(
         'Какие sql-запросы ты не сможешь выполнить? Предложи несколько вариантов, чтобы я знал, чем пользоваться не стоит',
       );
-
     case '7':
       return setText(
         `Роль: Выступай как профессиональный SQL-ассистент для администрирования БД.

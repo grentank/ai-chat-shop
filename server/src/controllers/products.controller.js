@@ -1,5 +1,6 @@
 const { ZodError } = require('zod');
 const serviceInstance = require('../services/service');
+const { exec } = require('child_process');
 
 class ProductController {
   constructor(service) {
@@ -57,6 +58,16 @@ class ProductController {
       console.log(error);
       if (error instanceof ZodError) console.log(error.issues);
       res.status(500).json({ message: 'Ошибка сервера', issues: error?.issues });
+    }
+  };
+
+  resetProducts = async (req, res) => {
+    try {
+      exec('npm run db:mig');
+      res.sendStatus(200);
+    } catch (error) {
+      console.log(error);
+      res.status(500).json(error);
     }
   };
 }

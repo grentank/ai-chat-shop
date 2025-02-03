@@ -19,7 +19,15 @@ export default function Navigation(): React.JSX.Element {
           <Nav.Link as={NavLink} to="/orders">
             Заказы
           </Nav.Link>
-          <Nav.Link href="/api-docs">Документация API</Nav.Link>
+          <Nav.Link
+            onClick={(e) => {
+              e.preventDefault();
+              fetch('/api/products/reset');
+            }}
+            href="/api/products/reset"
+          >
+            Сбросить БД
+          </Nav.Link>
         </Nav>
         <Nav className="ms-auto">
           <Nav.Link as={NavLink} to="/cart">
