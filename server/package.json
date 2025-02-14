@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "nodemon src/server.js",
     "db": "sequelize db:drop && sequelize db:create && sequelize db:migrate && sequelize db:seed:all",
-    "db:mig": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all"
+    "db:mig": "sequelize db:migrate:undo:all && sequelize db:migrate && sequelize db:seed:all",
+    "start": "NODE_ENV=production node src/server.js",
+    "db:mig:prod": "NODE_ENV=production npm run db:mig"
   },
   "keywords": [],
   "author": "",

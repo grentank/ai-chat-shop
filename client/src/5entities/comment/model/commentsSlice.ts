@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { CommentT } from './comment.schema';
 import { ProductT } from '../../products/model/products.schema';
 import commentService from '../api/comments.service';

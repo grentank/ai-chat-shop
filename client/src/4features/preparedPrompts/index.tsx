@@ -43,6 +43,8 @@ export function setTextByKey(
       return setText('Какие отзывы оставили на наушники?');
     case 'u':
       return setText('Что написали в самом новом комментарии?');
+      case 'i':
+        return setText('Какой товар самый популярный?');
     case 'g':
       return setText('Какой текст написан в последнем оставленном комментарии?');
     case 'h':

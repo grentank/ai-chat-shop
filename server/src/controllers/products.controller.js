@@ -1,6 +1,7 @@
 const { ZodError } = require('zod');
 const serviceInstance = require('../services/service');
 const { exec } = require('child_process');
+require('dotenv').config()
 
 class ProductController {
   constructor(service) {
