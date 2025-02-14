@@ -113,7 +113,7 @@ const ChatAI = () => {
                     }
                     setInput('');
                   }
-                  if (e.altKey && Number(e.key) >= 0 && Number(e.key) <= 9) {
+                  if (e.altKey) {
                     setTextByKey(e.key, setInput);
                   }
                 }}

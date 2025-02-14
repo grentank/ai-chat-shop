@@ -33,7 +33,7 @@ export const commentsSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getCommentsByProductId.fulfilled, (state, action) => {
-        state.list = action.payload;
+        state.list = action.payload.toSorted((c1, c2) => c2.id - c1.id);
       })
       .addCase(createComment.fulfilled, (state, action) => {
         state.list.unshift(action.payload);

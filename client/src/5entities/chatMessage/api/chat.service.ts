@@ -9,7 +9,13 @@ class ChatService {
   async createChat(text: string): Promise<ChatMessageT> {
     try {
       const response = await this.client.post('/chat/init', { text });
-      return chatMessageSchema.parse(response.data);
+      const newMessage = chatMessageSchema.parse(response.data);
+      return {
+        ...newMessage,
+        content: newMessage.content
+          .replaceAll('<script>', '&lt;script&gt;')
+          .replaceAll('</script>', '&lt;/script&gt;'),
+      };
     } catch (error) {
       if (error instanceof ZodError) {
         console.log('ZodError:', error.issues);
@@ -23,7 +29,13 @@ class ChatService {
   async sendUserMessage(messages: ChatMessageT[], text: string): Promise<ChatMessageT> {
     try {
       const response = await this.client.post('/chat/', { messages, text });
-      return chatMessageSchema.parse(response.data);
+      const newMessage = chatMessageSchema.parse(response.data);
+      return {
+        ...newMessage,
+        content: newMessage.content
+          .replaceAll('<script>', '&lt;script&gt;')
+          .replaceAll('</script>', '&lt;/script&gt;'),
+      };
     } catch (error) {
       if (error instanceof ZodError) {
         console.log('ZodError:', error.issues);

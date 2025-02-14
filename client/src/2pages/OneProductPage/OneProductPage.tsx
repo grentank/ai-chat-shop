@@ -8,6 +8,7 @@ import {
   createComment,
   getCommentsByProductId,
 } from '../../5entities/comment/model/commentsSlice';
+import { setCommentByKey } from '../../4features/preparedPrompts';
 
 export default function OneProductPage(): React.JSX.Element {
   const dispatch = useAppDispatch();
@@ -79,6 +80,9 @@ export default function OneProductPage(): React.JSX.Element {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     dispatchAddComment();
+                  }
+                  if (e.altKey) {
+                    setCommentByKey(e.key, setCommentText);
                   }
                 }}
                 ref={textareaRef}

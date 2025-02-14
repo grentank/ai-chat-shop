@@ -42,10 +42,9 @@ class ProductService {
   }
 
   async createCommentByProductId(productId, body) {
-    await this.Comment.create({ body, productId, userId: 6 });
+    const newComment = await this.Comment.create({ body, productId, userId: 6 });
     const comment = await this.Comment.findOne({
-      where: { productId },
-      order: [['id', 'DESC']],
+      where: { id: newComment.id },
       include: [this.User, this.Product],
     });
     return comment;

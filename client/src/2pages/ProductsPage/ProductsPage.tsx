@@ -20,7 +20,6 @@ export default function ProductsPage(): React.JSX.Element {
           <h3 style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>Горячие предложения</h3>
         </Col>
       </Row>
-
       <ProductList />
     </Container>
   );
