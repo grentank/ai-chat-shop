@@ -178,15 +178,19 @@ class ChatService {
   }
 
   async #editEnvAccesToken() {
-    const fileData = await fs.readFile('.env', 'utf-8');
-    const lines = fileData.split('\n');
-    const newLines = lines.map((line) => {
-      if (line.startsWith('GIGACHAT_ACCESS_TOKEN=')) {
-        return `GIGACHAT_ACCESS_TOKEN="${this.#accessToken}"`;
-      }
-      return line;
-    });
-    await fs.writeFile('.env', newLines.join('\n'), 'utf8');
+    try {
+      const fileData = await fs.readFile('.env', 'utf-8');
+      const lines = fileData.split('\n');
+      const newLines = lines.map((line) => {
+        if (line.startsWith('GIGACHAT_ACCESS_TOKEN=')) {
+          return `GIGACHAT_ACCESS_TOKEN="${this.#accessToken}"`;
+        }
+        return line;
+      });
+      await fs.writeFile('.env', newLines.join('\n'), 'utf8');
+    } catch (error) {
+      console.log('Error .env');
+    }
   }
 
   async getAccessToken() {

@@ -113,7 +113,10 @@ const ChatAI = () => {
                     }
                     setInput('');
                   }
-                  if (e.altKey) {
+
+                  const isMac = navigator.platform.toUpperCase().includes('MAC');
+
+                  if ((isMac && e.ctrlKey) || (!isMac && e.altKey)) {
                     setTextByKey(e.key, setInput);
                   }
                 }}

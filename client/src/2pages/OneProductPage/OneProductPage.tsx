@@ -77,11 +77,12 @@ export default function OneProductPage(): React.JSX.Element {
                   textareaRef.current!.style.height = `${textareaRef.current!.scrollHeight}px`;
                 }}
                 onKeyDown={(e) => {
+                  const isMac = navigator.platform.toUpperCase().includes('MAC');
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
                     dispatchAddComment();
                   }
-                  if (e.altKey) {
+                  if ((isMac && e.ctrlKey) || (!isMac && e.altKey)) {
                     setCommentByKey(e.key, setCommentText);
                   }
                 }}
