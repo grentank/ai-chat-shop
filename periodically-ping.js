@@ -13,9 +13,19 @@ async function periodicallyPing() {
     ),
   ];
   while (true) {
-    const randomTime = Math.floor(Math.random() * 100) + 20;
+    const randomTime = Math.floor(Math.random() * 35) + 20;
+    console.log("Next ping in ", randomTime);
     await wait(randomTime);
     const randomUrl = urls[Math.floor(Math.random() * urls.length)];
-    fetch(`${baseUrl}${randomUrl}`);
+    console.log(`Pinging ${baseUrl}${randomUrl}`);
+    try {
+      const res = await fetch(`${baseUrl}${randomUrl}`);
+      if (res.ok) console.log("Success");
+      else console.log("Fail");
+    } catch (error) {
+      console.log("Ошбика сети");
+    }
   }
 }
+
+periodicallyPing();
