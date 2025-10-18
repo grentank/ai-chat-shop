@@ -87,7 +87,7 @@
   },
   "tags": [
     { "name": "Orders", "description": "Заказы" },
-    { "name": "Products", "description": "Товары" }
+    { "name": "products", "description": "Товары" }
   ],
   "paths": {
     "/orders": {
@@ -174,7 +174,7 @@
         }
       ],
       "get": {
-        "tags": ["Products"],
+        "tags": ["products"],
         "description": "Получение конкретного товара",
         "responses": {
           "200": {
@@ -203,7 +203,7 @@
     "/products": {
       "description": "Получение всех товаров",
       "get": {
-        "tags": ["Products"],
+        "tags": ["products"],
         "description": "Получение всех товаров",
         "responses": {
           "200": {
