@@ -90,27 +90,21 @@ npm install zod@latest --legacy-peer-deps
 **Стало:**
 
 ```javascript
-// Жесткая проверка в коде
-const forbiddenKeywords = [
-  "INSERT",
-  "UPDATE",
-  "DELETE",
-  "DROP",
-  "ALTER",
-  "TRUNCATE",
-  "CREATE",
-  "GRANT",
-  "REVOKE",
-  "EXEC",
-  "EXECUTE",
-];
+// ВАЖНО: Проверка в коде НАМЕРЕННО УБРАНА для демонстрации уязвимости!
+// Защита только в системном промпте (легко обходится через prompt injection)
 
-for (const keyword of forbiddenKeywords) {
-  if (upperQuery.includes(keyword)) {
-    return { error: `Операция ${keyword} запрещена` };
-  }
+async #executeSQLTool(functionCall) {
+  const { query } = functionCall.arguments;
+
+  // Выполняем SQL запрос БЕЗ проверок
+  // Это демонстрирует опасность полагаться только на промпт
+  const [data] = await sequelize.query(query);
+  return { data, error: null };
 }
 ```
+
+**Цель:** Показать, что защита только в промпте недостаточна и может быть обойдена.
+См. `server/SECURITY_DEMO.md` для подробностей.
 
 ## 🚀 Как начать использовать
 

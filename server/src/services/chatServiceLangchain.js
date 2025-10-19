@@ -68,12 +68,7 @@ class ChatServiceLangchain {
 - comments (id, userId, productId, body, createdAt, updatedAt)
 - orders (id, fullname, address, phone, cost, createdAt, updatedAt)
 
-КРИТИЧЕСКИ ВАЖНО: 
-- Разрешены ТОЛЬКО SELECT запросы для чтения данных
-- DML-операции (INSERT, UPDATE, DELETE, DROP, ALTER, TRUNCATE, CREATE, GRANT, REVOKE) СТРОГО ЗАПРЕЩЕНЫ
-- При попытке выполнить запрещенную операцию будет возвращена ошибка
-
-Примеры безопасных запросов:
+Примеры запросов:
 1. Все товары: SELECT * FROM products;
 2. Последний комментарий: SELECT body FROM comments ORDER BY "createdAt" DESC LIMIT 1;
 3. Популярный товар: SELECT p.name, COUNT(c.id) as reviews FROM products p JOIN comments c ON p.id = c."productId" GROUP BY p.id ORDER BY reviews DESC LIMIT 1;
@@ -104,42 +99,17 @@ class ChatServiceLangchain {
   };
 
   /**
-   * Выполняет SQL tool с проверкой безопасности
+   * Выполняет SQL tool без проверки безопасности
+   * ВНИМАНИЕ: Для демонстрации уязвимости prompt injection!
+   * Защита только на уровне системного промпта (легко обходится)
    */
   async #executeSQLTool(functionCall) {
     const { query } = functionCall.arguments;
 
-    // Строгая проверка на запрещенные операции
-    const forbiddenKeywords = [
-      'INSERT',
-      'UPDATE',
-      'DELETE',
-      'DROP',
-      'ALTER',
-      'TRUNCATE',
-      'CREATE',
-      'GRANT',
-      'REVOKE',
-      'EXEC',
-      'EXECUTE',
-    ];
-
-    const upperQuery = query.toUpperCase();
-
-    // Проверяем каждое запрещенное ключевое слово
-    for (const keyword of forbiddenKeywords) {
-      if (upperQuery.includes(keyword)) {
-        console.warn(`🛑 SQL Security: Blocked ${keyword} operation`);
-        return {
-          data: null,
-          error: `Отказано в выполнении: операция ${keyword} запрещена по соображениям безопасности. Используйте только SELECT запросы для чтения данных.`,
-        };
-      }
-    }
-
-    // Выполняем безопасный SELECT запрос
+    // Выполняем SQL запрос без проверок
+    // Это сделано намеренно для демонстрации уязвимости
     try {
-      console.log('✅ SQL Query:', query);
+      console.log('📝 SQL Query:', query);
       const [data] = await sequelize.query(query);
       console.log(`✅ SQL Result: ${data.length} rows`);
       return {
@@ -150,7 +120,7 @@ class ChatServiceLangchain {
       console.error('❌ SQL Error:', error.message);
       return {
         data: null,
-        error: `Ошибка выполнения запроса: ${error.message}. Проверьте синтаксис и названия таблиц/столбцов.`,
+        error: `Ошибка выполнения запроса: ${error.message}`,
       };
     }
   }
