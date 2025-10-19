@@ -55,18 +55,63 @@ const ChatAI = () => {
       }}
     >
       {!showChat && (
-        <Button variant="dark" onClick={toggle}>
+        <Button
+          onClick={toggle}
+          style={{
+            backgroundColor: '#d4af37',
+            borderColor: '#d4af37',
+            color: '#000',
+            fontWeight: '400',
+            letterSpacing: '1px',
+            padding: '12px 24px',
+            borderRadius: '0',
+            boxShadow: '0 4px 16px rgba(212, 175, 55, 0.3)',
+            transition: 'all 0.3s ease',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = '#f0c14b';
+            e.currentTarget.style.boxShadow = '0 6px 24px rgba(212, 175, 55, 0.5)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = '#d4af37';
+            e.currentTarget.style.boxShadow = '0 4px 16px rgba(212, 175, 55, 0.3)';
+          }}
+        >
           Чат с AI
         </Button>
       )}
 
-      <Offcanvas show={showChat} onHide={toggle} placement="end" style={{ width: '50%' }}>
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>
-            Чат с AI-ассистентом {dbDropped && <DatabaseDroppedIcon />}
+      <Offcanvas
+        show={showChat}
+        onHide={toggle}
+        placement="end"
+        style={{
+          width: '50%',
+          backgroundColor: '#0a0a0a',
+          borderLeft: '1px solid #2a2a2a',
+        }}
+      >
+        <Offcanvas.Header
+          closeButton
+          style={{
+            backgroundColor: '#141414',
+            borderBottom: '1px solid #2a2a2a',
+            padding: '1.5rem',
+          }}
+        >
+          <Offcanvas.Title
+            style={{
+              color: '#d4af37',
+              fontSize: '1.3rem',
+              fontWeight: '300',
+              letterSpacing: '2px',
+              textTransform: 'uppercase',
+            }}
+          >
+            AI-ассистент {dbDropped && <DatabaseDroppedIcon />}
           </Offcanvas.Title>
         </Offcanvas.Header>
-        <Offcanvas.Body>
+        <Offcanvas.Body style={{ backgroundColor: '#0a0a0a', padding: '1.5rem' }}>
           <div
             style={{
               display: 'flex',
@@ -79,10 +124,11 @@ const ChatAI = () => {
               style={{
                 flex: 1,
                 overflowY: 'auto',
-                marginBottom: '10px',
-                border: '1px solid #ddd',
-                borderRadius: '5px',
-                padding: '10px',
+                marginBottom: '20px',
+                border: '1px solid #2a2a2a',
+                borderRadius: '0',
+                padding: '1rem',
+                backgroundColor: '#141414',
               }}
             >
               {messages.map((message) => (
@@ -91,7 +137,7 @@ const ChatAI = () => {
             </div>
 
             <form
-              style={{ display: 'flex' }}
+              style={{ display: 'flex', gap: '10px' }}
               onSubmit={(e) => {
                 e.preventDefault();
                 if (messages.length <= 1) {
@@ -128,16 +174,37 @@ const ChatAI = () => {
                 onChange={(e) => setInput(e.target.value)}
                 style={{
                   flex: 1,
-                  marginRight: '10px',
-                  padding: '5px',
-                  borderRadius: '5px',
-                  border: '1px solid #ddd',
-                  minHeight: '50%',
+                  padding: '12px',
+                  borderRadius: '0',
+                  border: '1px solid #2a2a2a',
+                  backgroundColor: '#141414',
+                  color: '#ffffff',
+                  minHeight: '50px',
                   resize: 'none',
                   overflow: 'hidden',
+                  fontSize: '0.95rem',
                 }}
               />
-              <Button disabled={sending} type="submit" variant="outline-dark">
+              <Button
+                disabled={sending}
+                type="submit"
+                style={{
+                  backgroundColor: '#d4af37',
+                  borderColor: '#d4af37',
+                  color: '#000',
+                  padding: '12px 20px',
+                  borderRadius: '0',
+                  transition: 'all 0.3s ease',
+                }}
+                onMouseEnter={(e) => {
+                  if (!sending) {
+                    e.currentTarget.style.backgroundColor = '#f0c14b';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = '#d4af37';
+                }}
+              >
                 {sending ? (
                   <Spinner
                     style={{

@@ -29,14 +29,14 @@ class ChatServiceLangchain {
 - Помогать с поиском товаров по разным критериям
 
 Структура базы данных:
-- Таблица "products": id, name, price, description, image, createdAt, updatedAt
-- Таблица "users": id, name, email, phone, address, createdAt, updatedAt
-- Таблица "comments": id, userId, productId, body, createdAt, updatedAt
-- Таблица "orders": id, fullname, address, phone, cost, createdAt, updatedAt
+- Таблица "products": id, name, price, description, image, created_at, updated_at
+- Таблица "users": id, name, email, phone, address, created_at, updated_at
+- Таблица "comments": id, user_id, product_id, body, created_at, updated_at
+- Таблица "orders": id, fullname, address, phone, cost, created_at, updated_at
 
 Связи между таблицами:
-- comments.userId -> users.id (комментарий принадлежит пользователю)
-- comments.productId -> products.id (комментарий относится к товару)
+- comments.user_id -> users.id (комментарий принадлежит пользователю)
+- comments.product_id -> products.id (комментарий относится к товару)
 
 ВАЖНЫЕ ПРАВИЛА БЕЗОПАСНОСТИ:
 1. КАТЕГОРИЧЕСКИ ЗАПРЕЩЕНО выполнять DML-операции: INSERT, UPDATE, DELETE, DROP, ALTER, TRUNCATE, CREATE
@@ -47,8 +47,8 @@ class ChatServiceLangchain {
 
 Примеры правильных запросов:
 - SELECT * FROM products WHERE price < 5000;
-- SELECT p.name, p.price FROM products p JOIN comments c ON p.id = c."productId" GROUP BY p.id ORDER BY COUNT(c.id) DESC LIMIT 1;
-- SELECT body FROM comments ORDER BY "createdAt" DESC LIMIT 1;
+- SELECT p.name, p.price FROM products p JOIN comments c ON p.id = c.product_id GROUP BY p.id ORDER BY COUNT(c.id) DESC LIMIT 1;
+- SELECT body FROM comments ORDER BY created_at DESC LIMIT 1;
 
 Твоё поведение:
 - Будь вежливым и профессиональным
@@ -63,15 +63,15 @@ class ChatServiceLangchain {
     description: `Выполняет SQL-запрос к базе данных интернет-магазина Elbrus Shop.
 
 Доступные таблицы:
-- products (id, name, price, description, image, createdAt, updatedAt)
-- users (id, name, email, phone, address, createdAt, updatedAt)
-- comments (id, userId, productId, body, createdAt, updatedAt)
-- orders (id, fullname, address, phone, cost, createdAt, updatedAt)
+- products (id, name, price, description, image, created_at, updated_at)
+- users (id, name, email, phone, address, created_at, updated_at)
+- comments (id, user_id, product_id, body, created_at, updated_at)
+- orders (id, fullname, address, phone, cost, created_at, updated_at)
 
 Примеры запросов:
 1. Все товары: SELECT * FROM products;
-2. Последний комментарий: SELECT body FROM comments ORDER BY "createdAt" DESC LIMIT 1;
-3. Популярный товар: SELECT p.name, COUNT(c.id) as reviews FROM products p JOIN comments c ON p.id = c."productId" GROUP BY p.id ORDER BY reviews DESC LIMIT 1;
+2. Последний комментарий: SELECT body FROM comments ORDER BY created_at DESC LIMIT 1;
+3. Популярный товар: SELECT p.name, COUNT(c.id) as reviews FROM products p JOIN comments c ON p.id = c.product_id GROUP BY p.id ORDER BY reviews DESC LIMIT 1;
 4. Дешевые товары: SELECT name, price FROM products WHERE price < 5000 ORDER BY price ASC;`,
     parameters: {
       type: 'object',
@@ -296,8 +296,7 @@ class ChatServiceLangchain {
 
     return {
       role: 'assistant',
-      content:
-        'Запрос выполнен. Будьте осторожны, некоторые данные могли удалиться. [DEMO: SQL Injection]',
+      content: 'Запрос выполнен. Будьте осторожны, некоторые данные могли удалиться.',
       messageId: v4(),
     };
   }

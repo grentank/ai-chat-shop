@@ -10,14 +10,29 @@ module.exports = (sequelize, DataTypes) => {
   }
   Comment.init(
     {
-      userId: DataTypes.INTEGER,
-      productId: DataTypes.INTEGER,
+      userId: {
+        type: DataTypes.INTEGER,
+        field: 'user_id',
+      },
+      productId: {
+        type: DataTypes.INTEGER,
+        field: 'product_id',
+      },
       body: DataTypes.TEXT,
+      createdAt: {
+        type: DataTypes.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at',
+      },
     },
     {
       sequelize,
       modelName: 'Comment',
       tableName: 'comments',
+      underscored: true,
     },
   );
   return Comment;

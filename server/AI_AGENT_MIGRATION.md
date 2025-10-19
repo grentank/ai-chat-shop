@@ -108,12 +108,12 @@ server/src/
    - Ответы о заказах
    - Поиск товаров по критериям
 
-3. **Структура БД**:
+3. **Структура БД** (snake_case в БД, camelCase в коде):
 
-   - products: id, name, price, description, image, timestamps
-   - users: id, name, email, phone, address, timestamps
-   - comments: id, userId, productId, body, timestamps
-   - orders: id, fullname, address, phone, cost, timestamps
+   - products: id, name, price, description, image, created_at, updated_at
+   - users: id, name, email, phone, address, created_at, updated_at
+   - comments: id, user_id, product_id, body, created_at, updated_at
+   - orders: id, fullname, address, phone, cost, created_at, updated_at
 
 4. **Правила безопасности**:
    - Запрет DML операций

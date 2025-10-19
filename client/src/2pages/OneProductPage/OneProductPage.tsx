@@ -32,45 +32,57 @@ export default function OneProductPage(): React.JSX.Element {
     setCommentText('');
   };
 
-  if (!product) return <p>загрузка...</p>;
+  if (!product)
+    return <p style={{ textAlign: 'center', color: '#b3b3b3', marginTop: '3rem' }}>загрузка...</p>;
 
   return (
-    <Container style={{ marginTop: '20px' }}>
+    <Container style={{ marginTop: '40px', marginBottom: '60px' }}>
       <Row>
-        <Col md={6} style={{ textAlign: 'center' }}>
-          <img src={product.image} alt={product.name} style={styles.prodImg} />
+        <Col md={6} style={styles.imageCol}>
+          <div style={styles.imageContainer}>
+            <img src={product.image} alt={product.name} style={styles.prodImg} />
+          </div>
         </Col>
 
-        <Col md={6}>
-          <h1>{product.name}</h1>
-          <div style={{ marginBottom: '20px' }}>
-            <h3 style={{ display: 'inline-block', marginRight: '10px' }}>{product.price} ₽</h3>
-            <span style={styles.highPrice}>{(product.price * 3).toFixed(2)} ₽</span>
-            <span style={styles.discountAmount}>-66%</span>
+        <Col md={6} style={styles.detailsCol}>
+          <h1 style={styles.productTitle}>{product.name}</h1>
+
+          <div style={styles.priceSection}>
+            <div style={styles.priceMain}>
+              <span style={styles.currentPrice}>{product.price.toLocaleString()} ₽</span>
+              <span style={styles.discountAmount}>-66%</span>
+            </div>
+            <span style={styles.highPrice}>
+              {(product.price * 3).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} ₽
+            </span>
           </div>
+
           <Button variant="dark" size="lg" style={styles.buyButton}>
             Добавить в корзину
           </Button>
+
+          <div style={styles.descriptionSection}>
+            <h4 style={styles.sectionTitle}>Описание товара</h4>
+            <div style={styles.divider} />
+            <p style={styles.description}>{product.description}</p>
+          </div>
         </Col>
       </Row>
 
-      <Row style={{ marginTop: '30px' }}>
+      <Row style={styles.commentsSection}>
         <Col>
-          <h4>Описание товара</h4>
-          <p>{product.description}</p>
-        </Col>
-      </Row>
+          <h4 style={styles.sectionTitle}>Отзывы</h4>
+          <div style={styles.divider} />
 
-      <Row style={{ marginTop: '30px' }}>
-        <Col>
           <Form
             onSubmit={(e) => {
               e.preventDefault();
               dispatchAddComment();
             }}
+            style={styles.commentForm}
           >
             <Form.Group controlId="commentText">
-              <Form.Label>Добавить комментарий</Form.Label>
+              <Form.Label style={styles.formLabel}>Ваш отзыв</Form.Label>
               <Form.Control
                 onInput={() => {
                   textareaRef.current!.style.height = 'auto';
@@ -91,29 +103,34 @@ export default function OneProductPage(): React.JSX.Element {
                 rows={3}
                 value={commentText}
                 onChange={(e) => setCommentText(e.target.value)}
-                placeholder="Введите ваш комментарий..."
+                placeholder="Поделитесь своим мнением о товаре..."
+                style={styles.textarea}
               />
             </Form.Group>
-            <Button variant="primary" type="submit" className="mt-2">
-              Отправить
+            <Button variant="primary" type="submit" className="mt-3" style={styles.submitButton}>
+              Отправить отзыв
             </Button>
           </Form>
         </Col>
       </Row>
 
-      <Row style={{ marginTop: '30px' }}>
+      <Row style={{ marginTop: '40px' }}>
         <Col>
           {comments.length === 0 ? (
-            <p style={{ fontStyle: 'italic', color: 'gray' }}>
-              Никто пока не оставил комментарий к данному товару.
+            <p style={styles.noComments}>
+              Пока никто не оставил отзыв о данном товаре. Будьте первым!
             </p>
           ) : (
-            comments.map((comment) => (
-              <div key={comment.id} style={{ marginBottom: '20px' }}>
-                <h5>{comment.User.name}</h5>
-                <p>{comment.body}</p>
-              </div>
-            ))
+            <div style={styles.commentsList}>
+              {comments.map((comment) => (
+                <div key={comment.id} style={styles.commentCard}>
+                  <div style={styles.commentHeader}>
+                    <h5 style={styles.commentAuthor}>{comment.User.name}</h5>
+                  </div>
+                  <p style={styles.commentBody}>{comment.body}</p>
+                </div>
+              ))}
+            </div>
           )}
         </Col>
       </Row>

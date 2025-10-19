@@ -20,16 +20,24 @@ export default function ProductCard({ product }: ProductCardProps): React.JSX.El
     >
       <div style={styles.imgContainer}>
         <Card.Img variant="top" src={product.image} style={styles.cardImg} />
+        <div style={styles.imageOverlay} data-overlay="true">
+          <span style={styles.viewDetails}>Подробнее</span>
+        </div>
       </div>
-      <Card.Body>
-        <Card.Title>
-          {product.price} ₽<span style={styles.fullPrice}>{(product.price * 3).toFixed(2)}</span>
-          <span style={styles.discount}>-66%</span>
-        </Card.Title>
-        <p>
+      <Card.Body style={styles.cardBody}>
+        <p style={styles.productName}>
           {product.name.slice(0, 42)}
           {product.name.length > 42 && '...'}
         </p>
+        <div style={styles.priceContainer}>
+          <div style={styles.priceRow}>
+            <span style={styles.currentPrice}>{product.price.toLocaleString()} ₽</span>
+            <span style={styles.discount}>-66%</span>
+          </div>
+          <span style={styles.fullPrice}>
+            {(product.price * 3).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g, ' ')} ₽
+          </span>
+        </div>
       </Card.Body>
     </Card>
   );

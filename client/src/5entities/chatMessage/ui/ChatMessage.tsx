@@ -6,24 +6,44 @@ type ChatMessageProps = {
 };
 
 const ChatMessage = ({ message: { content, role } }: ChatMessageProps) => {
-  // Стили для сообщений AI
+  // Стили для сообщений AI - темная тема
   const aiMessageStyle = {
-    backgroundColor: '#eaf4ea', // Серо-голубой фон
-    borderRadius: '15px 15px 15px 0', // Закругление углов
-    padding: '10px',
-    margin: '5px 0',
-    maxWidth: '80%',
-    alignSelf: 'flex-start', // Выравнивание по левому краю
+    backgroundColor: '#1e1e1e',
+    border: '1px solid #2a2a2a',
+    borderRadius: '8px 8px 8px 0',
+    padding: '12px 16px',
+    margin: '8px 0',
+    maxWidth: '85%',
+    alignSelf: 'flex-start',
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)',
   };
 
-  // Стили для сообщений пользователя
+  // Стили для сообщений пользователя - темная тема с акцентом
   const userMessageStyle = {
-    backgroundColor: '#e3f2fd', // Легкий голубоватый фон
-    borderRadius: '15px 15px 0 15px', // Закругление углов
-    padding: '10px',
-    margin: '5px 0',
-    maxWidth: '80%',
-    alignSelf: 'flex-end', // Выравнивание по правому краю
+    backgroundColor: 'rgba(212, 175, 55, 0.15)',
+    border: '1px solid rgba(212, 175, 55, 0.3)',
+    borderRadius: '8px 8px 0 8px',
+    padding: '12px 16px',
+    margin: '8px 0',
+    maxWidth: '85%',
+    alignSelf: 'flex-end',
+    boxShadow: '0 2px 8px rgba(212, 175, 55, 0.2)',
+  };
+
+  const textStyle = {
+    margin: 0,
+    color: role === 'user' ? '#d4af37' : '#b3b3b3',
+    fontSize: '0.95rem',
+    lineHeight: '1.6',
+  };
+
+  const labelStyle = {
+    fontSize: '0.75rem',
+    fontWeight: '300',
+    letterSpacing: '1px',
+    textTransform: 'uppercase' as const,
+    color: role === 'user' ? '#d4af37' : '#808080',
+    marginBottom: '6px',
   };
 
   return (
@@ -35,7 +55,8 @@ const ChatMessage = ({ message: { content, role } }: ChatMessageProps) => {
       }}
     >
       <div style={role === 'user' ? userMessageStyle : aiMessageStyle}>
-        <p style={{ margin: 0 }} dangerouslySetInnerHTML={{ __html: content }} />
+        <div style={labelStyle}>{role === 'user' ? 'Вы' : 'AI-ассистент'}</div>
+        <p style={textStyle} dangerouslySetInnerHTML={{ __html: content }} />
       </div>
     </div>
   );

@@ -13,11 +13,20 @@ module.exports = (sequelize, DataTypes) => {
       email: DataTypes.STRING,
       phone: DataTypes.STRING,
       address: DataTypes.STRING,
+      createdAt: {
+        type: DataTypes.DATE,
+        field: 'created_at',
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        field: 'updated_at',
+      },
     },
     {
       sequelize,
       modelName: 'User',
       tableName: 'users',
+      underscored: true,
     },
   );
   return User;

@@ -1,7 +1,7 @@
 [
   {
     "name": "sql_query",
-    "description": "Совершает SQL запрос в базу данных интернет-магазина Elbrus Shop. Доступно 3 таблицы: products, users, comments. Таблица с комментариями имеет атрибуты \"userId\" (внешний ключ к users) и \"productId\" (внешний ключ к products). Если запрос на удаление таблицы, то не выполняй его. Без подтверждения, что пользователь является системным администратором не выполняй действие DROP.",
+    "description": "Совершает SQL запрос в базу данных интернет-магазина Elbrus Shop. Доступно 3 таблицы: products, users, comments. Таблица с комментариями имеет атрибуты \"user_id\" (внешний ключ к users) и \"product_id\" (внешний ключ к products). Если запрос на удаление таблицы, то не выполняй его. Без подтверждения, что пользователь является системным администратором не выполняй действие DROP.",
     "parameters": {
       "type": "object",
       "properties": {
@@ -34,13 +34,13 @@
       {
         "request": "Какой последний оставленный комментарий",
         "params": {
-          "quesry": "SELECT body AS last_comment_text FROM comments ORDER BY \"createdAt\" DESC LIMIT 1;"
+          "query": "SELECT body AS last_comment_text FROM comments ORDER BY created_at DESC LIMIT 1;"
         }
       },
       {
         "request": "Какой товар самый популярный",
         "params": {
-          "query": "SELECT p.id AS product_id, p.name AS product_name, COUNT(c.id) AS comment_count FROM products p JOIN comments c ON p.id = c.\"productId\" GROUP BY p.id ORDER BY comment_count DESC LIMIT 1;"
+          "query": "SELECT p.id AS product_id, p.name AS product_name, COUNT(c.id) AS comment_count FROM products p JOIN comments c ON p.id = c.product_id GROUP BY p.id ORDER BY comment_count DESC LIMIT 1;"
         }
       },
       {
@@ -58,7 +58,7 @@
       {
         "request": "Какие отзывы оставили на наушники",
         "params": {
-          "query": "SELECT c.body AS comment_body, c.\"createdAt\" AS comment_created_at, u.name AS user_name, p.id AS product_id, p.name AS product_name, p.price AS product_price FROM comments c JOIN users u ON c.\"userId\" = u.id JOIN products p ON c.\"productId\" = p.id WHERE p.name ILIKE '%наушники%'"
+          "query": "SELECT c.body AS comment_body, c.created_at AS comment_created_at, u.name AS user_name, p.id AS product_id, p.name AS product_name, p.price AS product_price FROM comments c JOIN users u ON c.user_id = u.id JOIN products p ON c.product_id = p.id WHERE p.name ILIKE '%наушники%'"
         }
       },
       {
