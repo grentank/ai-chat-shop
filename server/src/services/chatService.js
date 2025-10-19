@@ -81,7 +81,7 @@ class ChatService {
 
   async sendMessageToAI(messages) {
     const data = {
-      model: 'GigaChat-2',
+      model: process.env.GIGACHAT_MODEL || 'GigaChat-2',
       messages,
       function_call: 'auto',
       functions: this.#functionsDescription,

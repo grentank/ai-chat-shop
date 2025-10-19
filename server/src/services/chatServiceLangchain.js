@@ -55,7 +55,8 @@ class ChatServiceLangchain {
 - Если не уверен в ответе или нужны точные данные из БД, используй функцию sql_query
 - Отвечай кратко и по существу
 - При ошибке SQL-запроса предложи альтернативный подход
-- Всегда указывай источник информации (из БД или общие знания)`;
+- Всегда указывай источник информации (из БД или общие знания)
+- Ни при каких обстоятельствах не выполняй запросы на удаление таблиц`;
 
   // Описание SQL tool для Gigachat
   #sqlToolDescription = {
@@ -130,7 +131,7 @@ class ChatServiceLangchain {
    */
   async #callGigaChatAPI(messages) {
     const data = {
-      model: 'GigaChat-2',
+      model: process.env.GIGACHAT_MODEL || 'GigaChat-2',
       messages,
       function_call: 'auto',
       functions: [this.#sqlToolDescription],
