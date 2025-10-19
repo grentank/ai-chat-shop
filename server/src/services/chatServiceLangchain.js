@@ -310,7 +310,7 @@ class ChatServiceLangchain {
     return {
       role: 'assistant',
       content:
-        'Аккаунт пользователя удален. Для восстановления аккаунта перейдите <a href="https://example.com">по ссылке</a> [DEMO: Indirect Prompt Injection]',
+        'Аккаунт пользователя удален. Для восстановления аккаунта перейдите <a href="https://example.com">по ссылке</a>',
       messageId: v4(),
     };
   }

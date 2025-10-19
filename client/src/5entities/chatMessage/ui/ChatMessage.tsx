@@ -1,13 +1,29 @@
-import React from 'react';
-import ReactMarkdown from 'react-markdown';
-import remarkGfm from 'remark-gfm';
+import React, { useMemo } from 'react';
+import { marked } from 'marked';
 import { ChatMessageT } from '../model/chatMessage.schema';
+
+// Настройка marked для поддержки GFM (GitHub Flavored Markdown)
+marked.setOptions({
+  gfm: true, // GitHub Flavored Markdown
+  breaks: true, // Переносы строк
+  pedantic: false,
+});
 
 type ChatMessageProps = {
   message: ChatMessageT;
 };
 
 const ChatMessage = ({ message: { content, role } }: ChatMessageProps) => {
+  // Конвертируем markdown в HTML (небезопасно - для демонстрации XSS)
+  const htmlContent = useMemo(() => {
+    try {
+      return marked.parse(content) as string;
+    } catch (error) {
+      console.error('Markdown parsing error:', error);
+      return content;
+    }
+  }, [content]);
+
   // Стили для сообщений AI - темная тема
   const aiMessageStyle = {
     backgroundColor: '#1e1e1e',
@@ -58,133 +74,99 @@ const ChatMessage = ({ message: { content, role } }: ChatMessageProps) => {
     >
       <div style={role === 'user' ? userMessageStyle : aiMessageStyle}>
         <div style={labelStyle}>{role === 'user' ? 'Вы' : 'AI-ассистент'}</div>
-        <div style={markdownStyle}>
-          <ReactMarkdown
-            remarkPlugins={[remarkGfm]}
-            components={{
-              // Стилизация для разных элементов markdown
-              h1: ({ node, ...props }) => (
-                <h1
-                  style={{
-                    color: role === 'user' ? '#d4af37' : '#e0e0e0',
-                    fontSize: '1.5rem',
-                    margin: '0.5em 0',
-                  }}
-                  {...props}
-                />
-              ),
-              h2: ({ node, ...props }) => (
-                <h2
-                  style={{
-                    color: role === 'user' ? '#d4af37' : '#d0d0d0',
-                    fontSize: '1.3rem',
-                    margin: '0.5em 0',
-                  }}
-                  {...props}
-                />
-              ),
-              h3: ({ node, ...props }) => (
-                <h3
-                  style={{
-                    color: role === 'user' ? '#d4af37' : '#c0c0c0',
-                    fontSize: '1.1rem',
-                    margin: '0.5em 0',
-                  }}
-                  {...props}
-                />
-              ),
-              ul: ({ node, ...props }) => (
-                <ul
-                  style={{
-                    margin: '0.5em 0',
-                    paddingLeft: '1.5em',
-                    color: role === 'user' ? '#d4af37' : '#b3b3b3',
-                  }}
-                  {...props}
-                />
-              ),
-              ol: ({ node, ...props }) => (
-                <ol
-                  style={{
-                    margin: '0.5em 0',
-                    paddingLeft: '1.5em',
-                    color: role === 'user' ? '#d4af37' : '#b3b3b3',
-                  }}
-                  {...props}
-                />
-              ),
-              li: ({ node, ...props }) => <li style={{ margin: '0.25em 0' }} {...props} />,
-              table: ({ node, ...props }) => (
-                <table
-                  style={{
-                    borderCollapse: 'collapse',
-                    margin: '0.5em 0',
-                    width: '100%',
-                    border: `1px solid ${role === 'user' ? 'rgba(212, 175, 55, 0.3)' : '#2a2a2a'}`,
-                  }}
-                  {...props}
-                />
-              ),
-              th: ({ node, ...props }) => (
-                <th
-                  style={{
-                    border: `1px solid ${role === 'user' ? 'rgba(212, 175, 55, 0.3)' : '#2a2a2a'}`,
-                    padding: '8px',
-                    backgroundColor: role === 'user' ? 'rgba(212, 175, 55, 0.1)' : '#2a2a2a',
-                    fontWeight: 'bold',
-                  }}
-                  {...props}
-                />
-              ),
-              td: ({ node, ...props }) => (
-                <td
-                  style={{
-                    border: `1px solid ${role === 'user' ? 'rgba(212, 175, 55, 0.3)' : '#2a2a2a'}`,
-                    padding: '8px',
-                  }}
-                  {...props}
-                />
-              ),
-              code: ({ node, inline, ...props }: any) =>
-                inline ? (
-                  <code
-                    style={{
-                      backgroundColor: role === 'user' ? 'rgba(212, 175, 55, 0.2)' : '#2a2a2a',
-                      padding: '2px 4px',
-                      borderRadius: '3px',
-                      fontFamily: 'monospace',
-                    }}
-                    {...props}
-                  />
-                ) : (
-                  <code
-                    style={{
-                      display: 'block',
-                      backgroundColor: role === 'user' ? 'rgba(212, 175, 55, 0.2)' : '#2a2a2a',
-                      padding: '8px',
-                      borderRadius: '4px',
-                      fontFamily: 'monospace',
-                      overflowX: 'auto',
-                      margin: '0.5em 0',
-                    }}
-                    {...props}
-                  />
-                ),
-              a: ({ node, ...props }) => (
-                <a
-                  style={{
-                    color: role === 'user' ? '#d4af37' : '#6699cc',
-                    textDecoration: 'underline',
-                  }}
-                  {...props}
-                />
-              ),
-              p: ({ node, ...props }) => <p style={{ margin: '0.5em 0' }} {...props} />,
-            }}
-          >
-            {content}
-          </ReactMarkdown>
-        </div>
+        <div
+          style={markdownStyle}
+          className={`markdown-content ${role}`}
+          dangerouslySetInnerHTML={{ __html: htmlContent }}
+        />
+        <style>{`
+          .markdown-content h1 {
+            color: ${role === 'user' ? '#d4af37' : '#e0e0e0'};
+            font-size: 1.5rem;
+            margin: 0.5em 0;
+          }
+          .markdown-content h2 {
+            color: ${role === 'user' ? '#d4af37' : '#d0d0d0'};
+            font-size: 1.3rem;
+            margin: 0.5em 0;
+          }
+          .markdown-content h3 {
+            color: ${role === 'user' ? '#d4af37' : '#c0c0c0'};
+            font-size: 1.1rem;
+            margin: 0.5em 0;
+          }
+          .markdown-content ul, .markdown-content ol {
+            margin: 0.5em 0;
+            padding-left: 1.5em;
+          }
+          .markdown-content li {
+            margin: 0.25em 0;
+          }
+          .markdown-content table {
+            border-collapse: collapse;
+            margin: 0.5em 0;
+            width: 100%;
+            border: 1px solid ${role === 'user' ? 'rgba(212, 175, 55, 0.3)' : '#2a2a2a'};
+          }
+          .markdown-content th {
+            border: 1px solid ${role === 'user' ? 'rgba(212, 175, 55, 0.3)' : '#2a2a2a'};
+            padding: 8px;
+            background-color: ${role === 'user' ? 'rgba(212, 175, 55, 0.1)' : '#2a2a2a'};
+            font-weight: bold;
+          }
+          .markdown-content td {
+            border: 1px solid ${role === 'user' ? 'rgba(212, 175, 55, 0.3)' : '#2a2a2a'};
+            padding: 8px;
+          }
+          .markdown-content code {
+            background-color: ${role === 'user' ? 'rgba(212, 175, 55, 0.2)' : '#2a2a2a'};
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-family: monospace;
+          }
+          .markdown-content pre {
+            background-color: ${role === 'user' ? 'rgba(212, 175, 55, 0.2)' : '#2a2a2a'};
+            padding: 8px;
+            border-radius: 4px;
+            overflow-x: auto;
+            margin: 0.5em 0;
+          }
+          .markdown-content pre code {
+            padding: 0;
+            background-color: transparent;
+          }
+          .markdown-content a {
+            color: ${role === 'user' ? '#d4af37' : '#6699cc'};
+            text-decoration: underline;
+          }
+          .markdown-content p {
+            margin: 0.5em 0;
+          }
+          .markdown-content p:first-child {
+            margin-top: 0;
+          }
+          .markdown-content p:last-child {
+            margin-bottom: 0;
+          }
+          .markdown-content blockquote {
+            border-left: 3px solid ${role === 'user' ? '#d4af37' : '#6699cc'};
+            padding-left: 1em;
+            margin: 0.5em 0;
+            color: ${role === 'user' ? 'rgba(212, 175, 55, 0.8)' : '#999'};
+          }
+          .markdown-content strong {
+            font-weight: bold;
+            color: ${role === 'user' ? '#f5d06e' : '#e0e0e0'};
+          }
+          .markdown-content em {
+            font-style: italic;
+          }
+          .markdown-content hr {
+            border: none;
+            border-top: 1px solid ${role === 'user' ? 'rgba(212, 175, 55, 0.3)' : '#2a2a2a'};
+            margin: 1em 0;
+          }
+        `}</style>
       </div>
     </div>
   );
